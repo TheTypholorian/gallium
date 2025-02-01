@@ -16,21 +16,18 @@ public class LocalVarToken implements Token {
 
     @Override
     public Token handle(Line line, String next) {
-        return switch (next) {
-            case "get" -> {
+        switch (next) {
+            case "get":
                 line.stack = new GetLocalVarInstruction(var);
-                yield null;
-            }
-            case "set" -> {
+                return null;
+            case "set":
                 SetLocalNode token = new SetLocalNode(this);
                 line.insn.add(token);
-                yield token;
-            }
-            default -> {
+                return token;
+            default:
                 line.parent.error.accept(new ParsingException(ParsingException.Reason.BAD_LOCAL_VAR_INPUT_TOKEN, line, "Invalid local var input token " + next));
-                yield null;
-            }
-        };
+                return null;
+        }
     }
 
     @Override

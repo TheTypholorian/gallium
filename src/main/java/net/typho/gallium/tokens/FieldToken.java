@@ -19,17 +19,15 @@ public class FieldToken implements Token {
     @Override
     public Token handle(Line line, String next) {
         switch (next) {
-            case "get" -> {
+            case "get":
                 line.stack = new GetFieldInstruction(field, fields.cls::instance);
                 return new ObjectToken(field.getType(), field);
-            }
-            case "set" -> {
+            case "set":
                 SetFieldNode token = new SetFieldNode(this);
                 line.insn.add(token);
                 return token;
-            }
-            default ->
-                    line.parent.error.accept(new ParsingException(ParsingException.Reason.BAD_TOKEN_INPUT, line, "Invalid field token input " + next));
+            default:
+                line.parent.error.accept(new ParsingException(ParsingException.Reason.BAD_TOKEN_INPUT, line, "Invalid field token input " + next));
         }
 
         return null;

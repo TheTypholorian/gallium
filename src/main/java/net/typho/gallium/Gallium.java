@@ -1,8 +1,6 @@
 package net.typho.gallium;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.nio.file.Files;
@@ -90,7 +88,7 @@ public class Gallium {
     public static final class Builder {
         public final List<String> code = new LinkedList<>();
         public Consumer<Exception> error = e -> {
-            throw (e instanceof RuntimeException r ? r : new RuntimeException(e));
+            throw (e instanceof RuntimeException ? (RuntimeException) e : new RuntimeException(e));
         };
         public Consumer<String> debug = s -> {}, console = System.out::println;
 
@@ -104,13 +102,13 @@ public class Gallium {
             return this;
         }
 
-        public Builder code(File file) {
-            return code(file.toPath());
+        public Builder code(Path path) {
+            return code(path.toFile());
         }
 
-        public Builder code(Path path) {
-            try {
-                return code(Files.readString(path));
+        public Builder code(File file) {
+            try (FileInputStream in = new FileInputStream(file)) {
+                return code(in);
             } catch (IOException e) {
                 return error(e);
             }
@@ -126,7 +124,13 @@ public class Gallium {
 
         public Builder code(InputStream in) {
             try {
-                return code(new String(in.readAllBytes()));
+                try (DataInputStream d = new DataInputStream(in)) {
+                    byte[] b = new byte[d.available()];
+
+                    d.readFully(b);
+
+                    return code(new String(b));
+                }
             } catch (IOException e) {
                 return error(e);
             }
