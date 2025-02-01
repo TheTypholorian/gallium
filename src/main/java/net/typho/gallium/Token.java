@@ -7,20 +7,21 @@ import net.typho.gallium.tokens.VarsToken;
 
 public interface Token {
     static Token parse(Line line, String next) {
-        return switch (next) {
-            case "classes" -> new ClassesToken();
-            case "vars" -> new VarsToken();
-            case "primitive" -> new PrimitivesToken();
-            case "print" -> {
+        switch (next) {
+            case "classes":
+                return new ClassesToken();
+            case "vars":
+                return new VarsToken();
+            case "primitive":
+                return new PrimitivesToken();
+            case "print":
                 PrintNode token = new PrintNode(line.parent.console);
                 line.insn.add(token);
-                yield  token;
-            }
-            default -> {
+                return token;
+            default:
                 line.parent.error.accept(new ParsingException(ParsingException.Reason.BAD_LINE_START, line, "Invalid line start " + next));
-                yield null;
-            }
-        };
+                return null;
+        }
     }
 
     Token handle(Line line, String next);

@@ -85,9 +85,11 @@ public class PrimitiveInstruction implements Instruction {
             String start = input.substring(0, 2);
 
             switch (start) {
-                case "0b", "0B":
+                case "0b":
+                case "0B":
                     return Long.parseLong(input.substring(2), 2);
-                case "0x", "0X":
+                case "0x":
+                case "0X":
                     return Long.parseLong(input.substring(2), 16);
             }
         }

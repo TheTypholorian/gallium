@@ -21,14 +21,15 @@ public class ClassToken implements Token {
 
     @Override
     public Token handle(Line line, String next) {
-        return switch (next) {
-            case "fields" -> new FieldsToken(this);
-            case "methods" -> new MethodsToken(this);
-            default -> {
+        switch (next) {
+            case "fields":
+                return new FieldsToken(this);
+            case "methods":
+                return new MethodsToken(this);
+            default:
                 line.parent.error.accept(new ParsingException(ParsingException.Reason.BAD_TOKEN_INPUT, line, "Invalid class token input " + next));
-                yield null;
-            }
-        };
+                return null;
+        }
     }
 
     @Override

@@ -16,7 +16,9 @@ public class SetFieldNode implements Node {
     @Override
     public Token handle(Line line, String next) {
         switch (next) {
-            case "classes", "vars", "primitive":
+            case "classes":
+            case "vars":
+            case "primitive":
                 line.queue.add(0, i -> {
                     supplier = i;
                     return this;
