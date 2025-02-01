@@ -7,7 +7,6 @@ group = "net.typho"
 version = "v0.1"
 description = "The Java library for reflection-based debugging tools"
 
-/*
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
@@ -25,4 +24,3 @@ publishing {
         }
     }
 }
- */
