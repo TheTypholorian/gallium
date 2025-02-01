@@ -1,0 +1,8 @@
+print classes test.A fields d get
+vars g set classes test.B fields e get fields f get
+classes test.A fields d set vars g get
+print classes test.A fields d get
+print classes test.A fields d get fields i get
+classes test.A fields d get fields i set primitive 420
+print classes test.A fields d get fields i get
+vars classA set classes test.A
