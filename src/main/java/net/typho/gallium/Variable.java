@@ -1,25 +1,27 @@
 package net.typho.gallium;
 
-public class Variable<O> {
-    public final String name;
-    public O value = null;
+public class Variable {
+    public VarType type = VarType.OBJECT;
+    public Object value = null;
 
-    public Variable(String name) {
-        this.name = name;
+    public Variable() {
     }
 
-    public Variable(String name, O value) {
-        this.name = name;
-        this.value = value;
+    public Variable(Object value) {
+        set(value);
     }
 
-    @SuppressWarnings("unchecked")
+    public Token getToken() {
+        return type.supplier.apply(value);
+    }
+
     public void set(Object o) {
-        value = (O) o;
+        value = o;
+        type = VarType.identify(o);
     }
 
     @Override
     public String toString() {
-        return name + " = " + value;
+        return String.valueOf(value);
     }
 }

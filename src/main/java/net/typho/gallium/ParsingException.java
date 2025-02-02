@@ -20,11 +20,11 @@ public class ParsingException extends RuntimeException {
     }
 
     public ParsingException(Reason reason, Line line, String specs) {
-        this(reason, line.line, specs);
+        this(reason, line.line + 1, specs);
     }
 
     public ParsingException(Reason reason, Line line) {
-        this(reason, line.line);
+        this(reason, line.line + 1);
     }
 
     public enum Reason {

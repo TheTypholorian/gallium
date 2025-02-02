@@ -1,16 +1,15 @@
-package net.typho.gallium.tokens;
+package net.typho.gallium.nodes;
 
 import net.typho.gallium.*;
-import net.typho.gallium.instructions.GetFieldInstruction;
-import net.typho.gallium.nodes.SetFieldNode;
+import net.typho.gallium.insn.GetFieldInstruction;
 
 import java.lang.reflect.Field;
 
-public class FieldToken implements Token {
-    public final FieldsToken fields;
+public class FieldNode implements Node {
+    public final FieldsNode fields;
     public final Field field;
 
-    public FieldToken(FieldsToken fields, String name) throws NoSuchFieldException {
+    public FieldNode(FieldsNode fields, String name) throws NoSuchFieldException {
         this.fields = fields;
         field = fields.cls.cls.getField(name);
         field.setAccessible(true);
@@ -21,7 +20,7 @@ public class FieldToken implements Token {
         switch (next) {
             case "get":
                 line.stack = new GetFieldInstruction(field, fields.cls::instance);
-                return new ObjectToken(field.getType(), field);
+                return new ObjectNode(field.getType(), field);
             case "set":
                 SetFieldNode token = new SetFieldNode(this);
                 line.insn.add(token);
@@ -31,6 +30,11 @@ public class FieldToken implements Token {
         }
 
         return null;
+    }
+
+    @Override
+    public Object invoke() {
+        return this;
     }
 
     @Override

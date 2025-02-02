@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 
 public class Gallium {
     public static final Consumer<String> defDebug = s -> System.out.println("\033[38;5;11m" + s + "\033[0m");
-    public final Map<String, Variable<?>> vars = new LinkedHashMap<>();
+    public final Map<String, Variable> vars = new LinkedHashMap<>();
     public final List<Line> lines = new LinkedList<>();
     public final Consumer<Exception> error;
     public final Consumer<String> debug, console;
@@ -26,7 +26,7 @@ public class Gallium {
         int i = 0;
 
         for (String code : builder.code) {
-            for (String line : code.split("\n")) {
+            for (String line : code.replace("(", "").replace(")", "").split("\n")) {
                 lines.add(new Line(this, i++, line));
             }
         }
@@ -74,15 +74,6 @@ public class Gallium {
         }
 
         field.set(target, value);
-    }
-
-    public static void main(String[] args) {
-        Gallium gallium = new Builder()
-                .code(new File("test.ga"))
-                .debug()
-                .create();
-
-        gallium.run();
     }
 
     public static final class Builder {

@@ -1,15 +1,12 @@
 package net.typho.gallium.nodes;
 
 import net.typho.gallium.*;
-import net.typho.gallium.instructions.PrimitiveInstruction;
-import net.typho.gallium.tokens.FieldToken;
-import net.typho.gallium.tokens.PrimitivesToken;
 
 public class SetFieldNode implements Node {
-    public final FieldToken field;
+    public final FieldNode field;
     public Instruction supplier;
 
-    public SetFieldNode(FieldToken field) {
+    public SetFieldNode(FieldNode field) {
         this.field = field;
     }
 

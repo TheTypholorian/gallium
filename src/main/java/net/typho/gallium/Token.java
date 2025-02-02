@@ -3,7 +3,7 @@ package net.typho.gallium;
 import net.typho.gallium.tokens.ClassesToken;
 import net.typho.gallium.nodes.PrintNode;
 import net.typho.gallium.tokens.PrimitivesToken;
-import net.typho.gallium.tokens.VarsToken;
+import net.typho.gallium.tokens.LocalVarsToken;
 
 public interface Token {
     static Token parse(Line line, String next) {
@@ -11,7 +11,7 @@ public interface Token {
             case "classes":
                 return new ClassesToken();
             case "vars":
-                return new VarsToken();
+                return new LocalVarsToken();
             case "primitive":
                 return new PrimitivesToken();
             case "print":

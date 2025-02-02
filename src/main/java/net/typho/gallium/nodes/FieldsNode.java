@@ -1,24 +1,29 @@
-package net.typho.gallium.tokens;
+package net.typho.gallium.nodes;
 
-import net.typho.gallium.Line;
-import net.typho.gallium.ParsingException;
-import net.typho.gallium.Token;
+import net.typho.gallium.*;
 
-public class FieldsToken implements Token {
-    public final ClassToken cls;
+public class FieldsNode implements Node {
+    public final ClassNode cls;
 
-    public FieldsToken(ClassToken cls) {
+    public FieldsNode(ClassNode cls) {
         this.cls = cls;
     }
 
     @Override
-    public FieldToken handle(Line line, String next) {
+    public FieldNode handle(Line line, String next) {
         try {
-            return new FieldToken(this, next);
+            FieldNode token = new FieldNode(this, next);
+            line.stack = token;
+            return token;
         } catch (NoSuchFieldException e) {
             line.parent.error.accept(new ParsingException(ParsingException.Reason.FIELD_NOT_FOUND, line, "Field " + next + " not found in " + cls.cls));
             return null;
         }
+    }
+
+    @Override
+    public Object invoke() {
+        return this;
     }
 
     @Override

@@ -1,19 +1,36 @@
-package net.typho.gallium.instructions;
+package net.typho.gallium.nodes;
 
-import net.typho.gallium.Instruction;
+import net.typho.gallium.Line;
+import net.typho.gallium.Node;
+import net.typho.gallium.Token;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PrimitiveInstruction implements Instruction {
+public class PrimitiveNode implements Node {
     public final Object value;
 
-    public PrimitiveInstruction(Object value) {
+    public PrimitiveNode(Object value) {
         this.value = value;
     }
 
-    public PrimitiveInstruction(String value) {
+    public PrimitiveNode(String value) {
         this.value = parse(value);
+    }
+
+    @Override
+    public Token handle(Line line, String next) {
+        return null;
+    }
+
+    @Override
+    public Object invoke() {
+        return value;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "[" + value + "]";
     }
 
     public static Object parse(String input) {
@@ -99,15 +116,5 @@ public class PrimitiveInstruction implements Instruction {
         }
 
         return Long.parseLong(input.replace("_", ""));
-    }
-
-    @Override
-    public Object invoke() {
-        return value;
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "[" + value + "]";
     }
 }

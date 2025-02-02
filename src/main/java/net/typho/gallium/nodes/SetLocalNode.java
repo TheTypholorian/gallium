@@ -1,13 +1,12 @@
 package net.typho.gallium.nodes;
 
 import net.typho.gallium.*;
-import net.typho.gallium.tokens.LocalVarToken;
 
 public class SetLocalNode implements Node {
-    public final LocalVarToken var;
+    public final LocalVarNode var;
     public Instruction supplier;
 
-    public SetLocalNode(LocalVarToken var) {
+    public SetLocalNode(LocalVarNode var) {
         this.var = var;
     }
 
@@ -19,6 +18,11 @@ public class SetLocalNode implements Node {
             case "primitive":
                 line.queue.add(0, i -> {
                     supplier = i;
+
+                    if (i != null) {
+                        var.var.type = i.type();
+                        var.var.value = i.type().supplier.apply(i);
+                    }
                     return this;
                 });
                 break;
@@ -34,6 +38,11 @@ public class SetLocalNode implements Node {
     public Object invoke() {
         var.var.set(supplier.invoke());
         return null;
+    }
+
+    @Override
+    public VarType type() {
+        return var.var.type;
     }
 
     @Override

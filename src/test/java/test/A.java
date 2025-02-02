@@ -1,5 +1,5 @@
 package test;
 
 public class A {
-    public static C d;
+    public static C d = null;
 }

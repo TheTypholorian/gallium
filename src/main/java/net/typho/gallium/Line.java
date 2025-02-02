@@ -14,13 +14,16 @@ public class Line {
     public Line(Gallium parent, int num, String line) {
         this.parent = parent;
         this.line = num;
-        StringBuilder current = new StringBuilder();
         Token token = null;
 
         Iterator<String> it = Arrays.stream(line.split("\\s+")).iterator();
 
         while (it.hasNext()) {
             String s = it.next();
+
+            if (s.startsWith("//")) {
+                break;
+            }
 
             parent.debug.accept("Parsing token " + s);
 

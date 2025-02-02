@@ -1,17 +1,18 @@
-package net.typho.gallium.tokens;
+package net.typho.gallium.nodes;
 
 import net.typho.gallium.Line;
+import net.typho.gallium.Node;
 import net.typho.gallium.ParsingException;
 import net.typho.gallium.Token;
 
-public class ClassToken implements Token {
+public class ClassNode implements Node {
     public final Class<?> cls;
 
-    public ClassToken(String cls) throws ClassNotFoundException {
+    public ClassNode(String cls) throws ClassNotFoundException {
         this(Class.forName(cls));
     }
 
-    public ClassToken(Class<?> cls)  {
+    public ClassNode(Class<?> cls)  {
         this.cls = cls;
     }
 
@@ -23,13 +24,18 @@ public class ClassToken implements Token {
     public Token handle(Line line, String next) {
         switch (next) {
             case "fields":
-                return new FieldsToken(this);
-            case "methods":
-                return new MethodsToken(this);
+                FieldsNode node = new FieldsNode(this);
+                line.stack = node;
+                return node;
             default:
                 line.parent.error.accept(new ParsingException(ParsingException.Reason.BAD_TOKEN_INPUT, line, "Invalid class token input " + next));
                 return null;
         }
+    }
+
+    @Override
+    public Object invoke() {
+        return this;
     }
 
     @Override

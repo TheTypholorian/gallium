@@ -1,7 +1,6 @@
 package net.typho.gallium.nodes;
 
 import net.typho.gallium.*;
-import net.typho.gallium.instructions.PrimitiveInstruction;
 
 import java.util.function.Consumer;
 
